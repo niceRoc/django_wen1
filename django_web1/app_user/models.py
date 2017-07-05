@@ -19,16 +19,16 @@ class UserInfo(models.Model):
     u_mail = models.CharField(max_length=20)
 
     # 收件人
-    u_addressee = models.CharField(max_length=20)
+    u_addressee = models.CharField(max_length=10, default='')
 
     # 邮编
-    u_phone = models.CharField(max_length=20)
+    u_phone = models.CharField(max_length=10, default='')
 
     # 手机号
-    u_phone = models.CharField(max_length=20)
+    u_phone = models.CharField(max_length=11, default='')
 
     # 地址
-    u_address = models.CharField(max_length=200)
+    u_address = models.CharField(max_length=100, default='')
 
     # 逻辑删除
     isDelete = models.BooleanField(default=False)
