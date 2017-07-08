@@ -2,6 +2,69 @@
 
 
 {% block head %}
+<!--<script type="text/javascript" src="/static/js/login.js"></script>-->
+<script>
+	$(function () {
+
+		// 用户名与密码错误信息提示
+		var error_name = false;
+		var error_pwd = false;
+
+		// 用户名判断
+		$('.name_input').blur(function () {
+			var sName = $('.name_input').val();
+
+			if (sName.length < 5 || sName.length > 20) {
+				$('.user_error').html('请输入5-20个字符的用户名').show();
+				error_name = true;
+			}
+			else {
+				$('.user_error').hide();
+				error_name = false;
+			}
+		});
+
+		// 密码判断
+		$('.pass_input').blur(function () {
+			var sPwd = $('.pass_input').val();
+
+			if(sPwd.length < 8 || sPwd.length > 20) {
+				$('.pwd_error').html('密码最少8位，最长20位').show();
+				error_pwd = true;
+			}
+			else {
+				$('.pwd_error').hide();
+				error_pwd = false;
+			}
+		});
+
+	//	$('form').submit(function () {
+	//		$('.name_input').blur();
+	//		$('.pass_input').blur();
+	//
+	//		// 只有两个错误信息都为false时才能返回true，才会被表单提交到服务器，交给视图去处理
+	//		return !error_name && !error_pwd
+	//	});
+
+		if ('{{user_error}}' == '1') {
+			$('.user_error').html('用户名错误').show();
+			error_name = true;
+		}
+		if ('{{pwd_error}}' == '1') {
+			$('.pwd_error').html('密码错误').show();
+			error_pwd = true;
+		}
+
+		$('.input_submit').click(function () {
+			$('.name_input').blur();
+			$('.pass_input').blur();
+
+			$.post('/user/login_handle/',function (data) {
+			    alert(data)
+			});
+		});
+	});
+</script>
 {% endblock head %}
 
 {% block body_header %}
@@ -19,17 +82,20 @@
 				<a href="/user/register/">立即注册</a>
 			</div>
 			<div class="form_input">
-				<form>
-					<input type="text" name="username" class="name_input" placeholder="请输入用户名">
-					<div class="user_error">输入错误</div>
-					<input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
-					<div class="pwd_error">输入错误</div>
+				<form method="post" action="/user/login_handle/">
+					{% csrf_token %}
+				<!--<form>-->
+					<input type="text" name="u_name" class="name_input" value="{{u_name}}" placeholder="请输入用户名">
+					<div class="user_error"></div>
+					<input type="password" name="u_pwd" class="pass_input" value="{{u_pwd}}" placeholder="请输入密码">
+					<div class="pwd_error"></div>
 					<div class="more_input clearfix">
-						<input type="checkbox" name="">
-						<label>记住用户名</label>
+						<input type="checkbox" name="u_records" id="is_records" checked>
+						<label for="is_records">记住用户名</label>
 						<a href="#">忘记密码</a>
 					</div>
-					<input type="submit" name="" value="登录" class="input_submit">
+					<input type="submit" value="登录" class="input_submit">
+					<!--<input type="button" value="登录" class="input_submit" />-->
 				</form>
 			</div>
 		</div>

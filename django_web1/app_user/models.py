@@ -22,7 +22,7 @@ class UserInfo(models.Model):
     u_addressee = models.CharField(max_length=10, default='')
 
     # 邮编
-    u_phone = models.CharField(max_length=10, default='')
+    # u_phone = models.CharField(max_length=10, default='')
 
     # 手机号
     u_phone = models.CharField(max_length=11, default='')
@@ -32,5 +32,3 @@ class UserInfo(models.Model):
 
     # 逻辑删除
     isDelete = models.BooleanField(default=False)
-
-
