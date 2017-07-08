@@ -3,6 +3,7 @@
 {% block head %}
 	<script type="text/javascript" src="/static/js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/static/js/slide.js"></script>
+	{{ block.super }}  {# 获取父模板的内容 #}
 {% endblock %}
 
 {% block body_main %}
@@ -22,7 +23,7 @@
 	<div class="center_con clearfix">
 		<ul class="subnav fl">
 			{% for dict in goods_list %}
-				<li><a href="#model0{{ forloop.counter }} " class="fruit">{{dict.t_list.g_title}}</a></li>
+				<li><a href="#model0{{ forloop.counter }} " >{{dict.t_list.g_title}}</a></li>
 			{% endfor %}
 		</ul>
 		<div class="slide fl">
@@ -45,14 +46,14 @@
 	{% for dict in goods_list %}
 		<div class="list_model">
 			<div class="list_title clearfix">
-				<h3 class="fl" id="model0{{ forloop.counter }}">{{dict.t_list.g_title}}</h3>
+				<h3 class="fl" id="model0{{ forloop.counter }}">{{ dict.t_list.g_title }}</h3>
 				<div class="subtitle fl">
 					<span>|</span>
 					{% for good in dict.f_list %}
-						<a href="/goods/detail{{good.id}}">{{good.g_title|truncatechars:15}}</a>
+						<a href="/detail/{{ good.id }}/">{{ good.g_title|truncatechars:15 }}</a>
 					{% endfor %}
 				</div>
-				<a href="{{dict.t_list.id}}" class="goods_more fr" id="fruit_more">查看更多 ></a>
+				<a href="/list/{{ dict.t_list.id }}/1" class="goods_more fr" id="fruit_more">查看更多 ></a>
 			</div>
 
 			<div class="goods_con clearfix">
@@ -60,8 +61,8 @@
 				<ul class="goods_list fl">
 					{% for good in dict.n_list %}
 					<li>
-						<h4><a href="{{good.id}}">{{good.g_title|truncatechars:15}}</a></h4>
-						<a href="{{good.id}}"><img src="/static/{{good.g_pic}}"></a>
+						<h4><a href="/detail/{{ good.id }}/">{{good.g_title|truncatechars:15}}</a></h4>
+						<a href="/detail/{{ good.id }}/"><img src="/static/{{ good.g_pic }}"></a>
 						<div class="prize">¥ {{good.g_price}}</div>
 					</li>
 					{% endfor %}

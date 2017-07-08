@@ -81,7 +81,6 @@ def login_handle(request):
             path = request.session.get('url_path', '/')
             # print path
             response = redirect(path)
-            # response = redirect('/user/')
 
             if is_records == 'on':  # 需要记住用户名, 将该用户名存到cookie中，设置过期时间为当前登录时间的7天后
                 response.set_cookie('u_name', u_name, expires=datetime.datetime.now() + datetime.timedelta(days=7))

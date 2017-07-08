@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+{% block body_main %}
+
+    <div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>
+				<span></span>
+				<ul class="subnav">
+					{% for type in t_list %}
+					<li><a href="/goods/list/{{ type.id }}" class="fruit">{{ type.g_title }}</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="/">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="/">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="/">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+    {% block goods_nav %}{% endblock goods_nav %}
+
+{% endblock body_main %}

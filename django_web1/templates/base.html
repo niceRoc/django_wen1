@@ -7,6 +7,18 @@
 	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
     <script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
     {% block head %}
+        <script>
+            $(function () {
+
+                // 给商品模块中侧边栏的icon小图标设置样式 新鲜水果、海鲜水产等标题
+                $('.subnav li').eq(0).children('a').addClass('fruit');
+                $('.subnav li').eq(1).children('a').addClass('seafood');
+                $('.subnav li').eq(2).children('a').addClass('meet');
+                $('.subnav li').eq(3).children('a').addClass('egg');
+                $('.subnav li').eq(4).children('a').addClass('vegetables');
+                $('.subnav li').eq(5).children('a').addClass('ice');
+            });
+	    </script>
     {% endblock head %}
 </head>
 <body>
@@ -17,7 +29,7 @@
                 <div class="fr">
                     {% if request.session.u_id%}
                     <div class=" login_btn fl">
-                        欢迎您：<em>{{request.session.u_name}}</em>
+                        欢迎您：<em style="color:#ff8800;">{{ request.session.u_name }}</em>
                         <span>|</span>
                         <a href="/user/logout/">退出</a>
                     </div>
@@ -43,7 +55,7 @@
         <div class="search_bar clearfix">
             <a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
 
-            {% if request.session.is_dis %} {# 判断是否有session值 #}
+            {% if cart_show|default:'0' == '1' %} {# 判断是否有session值 #}
                 <div class="search_con fl">
                     <input type="text" class="input_text fl" name="" placeholder="搜索商品">
                     <input type="button" class="input_btn fr" name="" value="搜索">
