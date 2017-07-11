@@ -9,7 +9,6 @@
     {% block head %}
         <script>
             $(function () {
-
                 // 给商品模块中侧边栏的icon小图标设置样式 新鲜水果、海鲜水产等标题
                 $('.subnav li').eq(0).children('a').addClass('fruit');
                 $('.subnav li').eq(1).children('a').addClass('seafood');
@@ -57,8 +56,10 @@
 
             {% if cart_show|default:'0' == '1' %} {# 判断是否有session值 #}
                 <div class="search_con fl">
-                    <input type="text" class="input_text fl" name="" placeholder="搜索商品">
-                    <input type="button" class="input_btn fr" name="" value="搜索">
+                    <form action="/search/" method="get" target="_blank">
+                        <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
+                        <input type="submit" class="input_btn fr" name="" value="搜索">
+                    </form>
                 </div>
                 <div class="guest_cart fr">
                     <a href="#" class="cart_name fl">我的购物车</a>
@@ -67,8 +68,10 @@
             {% else %}
                 <div class="sub_page_name fl"> &nbsp; | &nbsp;&nbsp;&nbsp; 用户中心</div>
                 <div class="search_con fr">
-                    <input type="text" class="input_text fl" name="" placeholder="搜索商品">
-                    <input type="button" class="input_btn fr" name="" value="搜索">
+                    <form action="/search/" method="get" target="_blank">
+                        <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
+                        <input type="submit" class="input_btn fr" name="" value="搜索">
+                    </form>
                 </div>
             {% endif %}
 	    </div>

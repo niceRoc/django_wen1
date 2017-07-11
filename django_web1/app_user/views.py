@@ -7,6 +7,7 @@ from hashlib import sha1
 import datetime
 from django.views.decorators.csrf import csrf_exempt
 from user_decorate import check_login
+from app_goods.models import GoodsInfo
 
 
 # Create your views here.
@@ -105,7 +106,18 @@ def center_info(request):
     """用户中心 -- 个人信息页面"""
 
     user = UserInfo.objects.get(pk=request.session.get('u_id'))
-    return render(request, 'app_user/user_center_info.html', {'title': '用户中心', 'user': user})
+
+    # 获取浏览器中的cookie值，没有就设置一个默认值 '', 获取后转换成一个列表[1,2,3,4,5,]
+    g_ids = request.COOKIES.get('goods_ids', '').split(',')
+    g_ids.pop()  # 删除最后一个，因为之前没有商品时会默认有一个，
+
+    g_list = []  # 存储商品的列表
+    # 按照顺序一个个按照保存的id查询所对应的商品对象
+    for g_id in g_ids:
+        g_list.append(GoodsInfo.objects.get(pk=g_id))
+
+    context = {'title': '用户中心', 'user': user, 'g_list': g_list}
+    return render(request, 'app_user/user_center_info.html', context)
 
 
 @check_login

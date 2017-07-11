@@ -1,0 +1,4 @@
+# 指定索引的属性
+{{ object.g_title }}
+{{ object.g_subtitle }}
+{{ object.g_content }}

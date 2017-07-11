@@ -9,8 +9,8 @@
 				<h1>全部商品分类</h1>
 				<span></span>
 				<ul class="subnav">
-					{% for type in t_list %}
-					<li><a href="/goods/list/{{ type.id }}" class="fruit">{{ type.g_title }}</a></li>
+					{% for type in t_all %}
+					<li><a href="/list/{{ type.id }}/1" class="fruit">{{ type.g_title }}</a></li>
 					{% endfor %}
 				</ul>
 			</div>
@@ -23,6 +23,26 @@
 			</ul>
 		</div>
 	</div>
+
     {% block goods_nav %}{% endblock goods_nav %}
 
+    <div class="main_wrap clearfix">
+		{% block goods_map %}
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+					{% for goods in n_list %}
+						<li>
+                            <a href="/detail/{{goods.id}}"><img src="/static/{{ goods.g_pic }}"></a>
+                            <h4><a href="/detail/{{goods.id}}">{{ goods.g_title }}</a></h4>
+                            <div class="prize">￥{{ goods.g_price }}</div>
+                        </li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		{% endblock goods_map %}
+        {% block goods_detail %}{% endblock goods_detail %}
+	</div>
 {% endblock body_main %}

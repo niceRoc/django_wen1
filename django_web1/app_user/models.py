@@ -30,5 +30,7 @@ class UserInfo(models.Model):
     # 地址
     u_address = models.CharField(max_length=100, default='')
 
+    # 用户浏览的商品
+
     # 逻辑删除
     isDelete = models.BooleanField(default=False)
