@@ -59,8 +59,8 @@ def detail(request, g_id):
         g_ids = request.COOKIES.get('goods_ids', '').split(',')
         # 判断当前浏览的商品id是否存在之前存的cookie中 ，如果存在 则删除，然后再加到最前面
         if g_id in g_ids:
-            g_id.remove(g_id)
-        g_ids.insert(0, g_id)
+            g_ids.remove(g_id)  # 删除相同的id
+        g_ids.insert(0, g_id)  # 添加到最前面
 
         # 如果超过5个，则删除最后一个
         # 最后有一个，会在后面转换的时候报错，所以判断6个，在获取的时候删除最后一个就是5个商品id
