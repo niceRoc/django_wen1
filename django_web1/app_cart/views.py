@@ -12,7 +12,9 @@ from models import CartInfo
 def index(request):
     """展示购物车"""
 
-    return render(request, 'app_cart/cart.html', {'title': '购物车'})
+    u_id = int(request.session.get('u_id'))
+    carts = CartInfo.objects.filter(user_id=u_id)
+    return render(request, 'app_cart/cart.html', {'title': '购物车', 'carts': carts})
 
 
 def add(request):

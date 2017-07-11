@@ -67,12 +67,13 @@
                 </div>
 
                 <script>
-
                     // 判断类名.login_btn的div中是否有‘登录’二字，有则未登录，没有则认为已经登录
                     if ($('.login_btn').text().indexOf('登录') < 0) {  // 没有登录二字，认为已经登录
                         // 显示该用户购物车数量
+                        $('#show_count').html('0111');
                         $.get('/cart/count/', function (data) {
-                            $('#show_count').html('0');
+
+                            $('#show_count').html('0111');
                             if (data.count != '0') {
                                 $('#show_count').html(data.count);
                             }
