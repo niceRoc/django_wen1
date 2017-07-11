@@ -26,7 +26,7 @@
             <div class="header">
                 <div class="welcome fl">欢迎来到天天生鲜!</div>
                 <div class="fr">
-                    {% if request.session.u_id%}
+                    {% if request.session.u_id %}
                     <div class=" login_btn fl">
                         欢迎您：<em style="color:#ff8800;">{{ request.session.u_name }}</em>
                         <span>|</span>
@@ -63,16 +63,27 @@
                 </div>
                 <div class="guest_cart fr">
                     <a href="/cart/" class="cart_name fl">我的购物车</a>
-                    <div class="goods_count fl" id="show_count">1</div>
+                    <div class="goods_count fl" id="show_count">0</div>
                 </div>
+
+                <script>
+
+                    // 判断类名.login_btn的div中是否有‘登录’二字，有则未登录，没有则认为已经登录
+                    if ($('.login_btn').text().indexOf('登录') < 0) {  // 没有登录二字，认为已经登录
+                        // 显示该用户购物车数量
+                        $.get('/cart/count/', function (data) {
+                            $('#show_count').html('0');
+                            if (data.count != '0') {
+                                $('#show_count').html(data.count);
+                            }
+                            else {
+                                $('#show_count').html('0');
+                            }
+                        });
+                    }
+                </script>
             {% else %}
-
-                {% if is_cart|default:'0' == '1' %}
-                <div class="sub_page_name fl"> &nbsp; | &nbsp;&nbsp;&nbsp; 购物车</div>
-                {% else %}
-                <div class="sub_page_name fl"> &nbsp; | &nbsp;&nbsp;&nbsp; 用户中心</div>
-                {% endif %}
-
+                <div class="sub_page_name fl"> &nbsp; | &nbsp;&nbsp;&nbsp; {{ title }}</div>
                 <div class="search_con fr">
                     <form action="/search/" method="get" target="_blank">
                         <input type="text" class="input_text fl" name="q" placeholder="搜索商品">

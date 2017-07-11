@@ -19,6 +19,7 @@ class UrlMiddleware(object):
             '/user/login_handle/',
             '/user/register/',
             '/user/register_handle/',
-            '/user/register_valid'
+            '/user/register_valid/',
+            '/user/is_login/'
         ]:
             request.session['url_path'] = request.get_full_path()

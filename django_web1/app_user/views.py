@@ -152,3 +152,14 @@ def site_handle(request):
 
     return JsonResponse({'user': [user.u_address, user.u_addressee, user.u_phone]})
 
+
+def is_login(request):
+    """判断用户是否登录"""
+
+    result = 0
+    # session中是否保存了id
+    if request.session.has_key('u_id'):
+        result = 1
+    return JsonResponse({'is_login': result})
+
+

@@ -5,26 +5,7 @@
 	<script type="text/javascript">
 		$(function () {
 
-		    // 加入购物车
-			$('#add_cart').click(function(){
-			    var $add_x = $('#add_cart').offset().top;
-				var $add_y = $('#add_cart').offset().left;
-
-				var $to_x = $('#show_count').offset().top;
-				var $to_y = $('#show_count').offset().left;
-
-				$(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'});
-				$(".add_jump").stop().animate({
-					'left': $to_y+7,
-					'top': $to_x+7},
-					"fast", function() {
-						$(".add_jump").fadeOut('fast',function(){
-							$('#show_count').html(2);
-						});
-				});
-			});
-
-			// 填写数量
+			// 填写商品数量
 			$('.num_show').blur(function () {
 			    var iVal = parseInt($(this).val());  // 商品数量
 			    var iStock = parseInt($('#g_stock').val());  // 商品库存
@@ -44,20 +25,71 @@
 				$('.total em').text(iTotal.toFixed(2) + '元');  // 保留小数2位
 				$(this).val(iVal);  // 设置商品数量
             });
-
 			// 数量+1
 			$('.add').click(function () {
 				var iNum = parseInt($('.num_show').val());
 				iNum ++;
 				$('.num_show').val(iNum).blur();
             });
-
 			// 数量-1
 			$('.minus').click(function () {
 				var iNum = parseInt($('.num_show').val());
 				iNum --;
 				$('.num_show').val(iNum).blur();
             });
+
+
+			// 加入购物车
+			$('#add_cart').click(function(){
+				var iVal = parseInt($('.num_show').val());  // 商品数量
+				var g_id = {{ goods.id }};  // 商品id
+
+			    // 判断是否登录
+				$.get('/user/is_login/', function (data) {
+					if (data.is_login) {  // 已经登录
+					    // 将商品加入到购物车中
+						$.get('/cart/add/', {'g_id': g_id, 'g_num': iVal}, function (data) {
+
+							if (data.is_add) {  // 添加成功，播放加入购物车动画
+
+								// 获取小圆点div位置
+							    var $add_x = $('#add_cart').offset().top;
+                                var $add_y = $('#add_cart').offset().left;
+
+                                // 获取小圆点需要到的地方位置
+                                var $to_x = $('#show_count').offset().top;
+                                var $to_y = $('#show_count').offset().left;
+
+								// 设置小圆点的css样式，并让小圆点显示出来
+                                $(".add_jump").css({'left': $add_y + 80, 'top': $add_x + 10, 'display': 'block'});
+                                // 小圆点执行动画
+                                $(".add_jump").stop().animate({
+                                    'left': $to_y + 7,
+                                    'top': $to_x + 7},
+                                    "fast", function() {
+                                    	// 小圆点淡出动画执行后，执行回调函数，改变购物车中的数量
+                                        $(".add_jump").fadeOut('fast',function(){
+                                            // 设置购物车中商品数量
+											$.get('/cart/count/', function (data) {
+											    if (data.count != '0') {
+											        $('#show_count').html(data.count);
+												}
+                                            });
+                                        });
+                                });
+							}
+							else {
+//							    alert('添加失败')
+							}
+                        });
+					}
+					else {
+					    window.location.href = '/user/login/'
+					}
+                });
+
+
+			});
         });
 	</script>
 {% endblock head %}

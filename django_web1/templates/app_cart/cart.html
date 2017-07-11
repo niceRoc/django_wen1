@@ -1,5 +1,32 @@
 {% extends 'base.html' %}
 
+{% block head %}
+	<script>
+		$(function () {
+			$('.num_show').blur(function () {
+				var iVal = parseInt($(this).val());  // 获取商品数量
+				var iStock = parseInt($('#stock').val());  // 商品库存
+				var iPrice = $('.col05').text();
+
+				if (iVal < 1 ) {
+				    iVal = 1;
+				}
+				else if (iVal > iStock) {
+				    iVal = iStock;
+				}
+				else if (isNaN(iVal)) {
+				    iVal = 1;
+				}
+
+				$('.num_show').val(iVal);  // 重新赋值数量
+            });
+
+			// 加入购物车
+
+        });
+	</script>
+{% endblock head %}
+
 {% block body_main %}
 	<div class="total_count">全部商品<em>2</em>件</div>	
 	<ul class="cart_list_th clearfix">
@@ -19,7 +46,8 @@
 		<li class="col06">
 			<div class="num_add">
 				<a href="javascript:;" class="add fl">+</a>
-				<input type="text" class="num_show fl" value="1">	
+				<input type="text" class="num_show fl" value="1">
+				<input type="hidden" id="stock">
 				<a href="javascript:;" class="minus fl">-</a>	
 			</div>
 		</li>
