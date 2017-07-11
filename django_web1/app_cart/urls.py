@@ -5,5 +5,5 @@ import views
 
 
 urlpatterns = [
-
+    url(r'^$', views.cart),  # 购物车
 ]
