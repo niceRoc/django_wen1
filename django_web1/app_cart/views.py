@@ -39,6 +39,7 @@ def add(request):
             cart_info.goods_id = g_id  # 商品id
             cart_info.count = g_num  # 商品数量
             cart_info.save()
+
         return JsonResponse({'is_add': '1'})
     except Exception as e:
         print e
@@ -61,3 +62,54 @@ def count(request):
     except Exception as e:
         print e
         return JsonResponse({'count': '0'})
+
+
+def handle(request):
+    """处理购物车页面"""
+
+    try:
+        u_id = int(request.session.get('u_id'))  # 用户id
+        g_id = int(request.GET.get('g_id'))  # 商品id
+        g_num = int(request.GET.get('g_num'))  # 商品数量，没有设置默认值 1
+
+        # 查询是否有购物记录
+        carts = CartInfo.objects.filter(user_id=u_id, goods_id=g_id)
+
+        if len(carts) == 1:
+            cart_info = carts[0]
+            cart_info.count = g_num  # 将用户传递过来的商品数量赋值给数据表中进行update
+            cart_info.save()
+
+        # 查询该用户想购买的所有商品
+        cart_all = CartInfo.objects.filter(user_id=u_id)
+
+        num_list = []  # 商品数量
+        price_list = []  # 商品单价
+
+        # 循环所有的购物车对象，将商品数量以及商品单价添加到列表中
+        for cart in cart_all:
+            num_list.append(cart.count)
+            price_list.append(cart.goods.g_price)
+
+        # 让两个列表的元素逐一相乘，构建一个新的列表
+        total_list = map(lambda (a, b):a * b, zip(num_list,price_list))
+        # print total_list
+        total = 0  # 初始化购物车中的商品总价
+        for i in total_list:
+            total += i
+        # print total
+
+        return JsonResponse({'result': '1', 'total': total})
+    except Exception as e:
+        print e
+        return JsonResponse({'result': '0'})
+
+
+def delete(request):
+    """删除购物车"""
+    # try:
+    cart_id = request.GET.get('cart_id')
+    cart = CartInfo.objects.filter(id=cart_id)
+    print cart[0].id
+    cart.delete()
+    return JsonResponse({'is_delete': '1'})
