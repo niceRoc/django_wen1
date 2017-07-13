@@ -71,6 +71,8 @@ def handle(request):
         u_id = int(request.session.get('u_id'))  # 用户id
         g_id = int(request.GET.get('g_id'))  # 商品id
         g_num = int(request.GET.get('g_num'))  # 商品数量，没有设置默认值 1
+        operate = request.GET.get('operate')  # 获取操作编号，1就是减去传来的商品价格，0则不做操作
+        # print operate
 
         # 查询是否有购物记录
         carts = CartInfo.objects.filter(user_id=u_id, goods_id=g_id)
@@ -98,6 +100,13 @@ def handle(request):
         for i in total_list:
             total += i
         # print total
+
+        if operate == '1':
+            n_cart = CartInfo.objects.filter(user_id=u_id, goods_id=g_id)
+            n_price = n_cart[0].goods.g_price
+            n_num = g_num
+            sub_total = n_price * n_num
+            total -= sub_total
 
         return JsonResponse({'result': '1', 'total': total})
     except Exception as e:

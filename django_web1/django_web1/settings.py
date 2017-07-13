@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'tinymce',  # 富文本编辑器
     'haystack',  # 全文检索
     'app_cart',
+    'app_order',
 )
 
 MIDDLEWARE_CLASSES = (
