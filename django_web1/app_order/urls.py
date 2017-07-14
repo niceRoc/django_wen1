@@ -5,5 +5,5 @@ import views
 
 
 urlpatterns = [
-    url(r'^$', views.index),
+    url(r'^$', views.index),  # 提交订单
 ]

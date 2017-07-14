@@ -16,8 +16,13 @@ class GoodsType(models.Model):
     # 逻辑删除
     isDelete = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.g_title.encode('utf-8')
+    # def __str__(self):
+    #     """如果python3可以直接使用str方法不指定utf-8"""
+    #     return self.g_title.encode('utf-8')
+
+    def __unicode__(self):
+        """使用unicode可以不用指定utf-8的编码格式"""
+        return self.g_title
 
 
 class GoodsInfo(models.Model):

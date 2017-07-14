@@ -4,19 +4,21 @@
 <script>
 	$(function () {
 	    var iCount = 0;
-	    var iTotal = 0;
+	    var fTotal = 0;
 	    $('.goods_list_td .col07').each(function () {
 			var iNum = parseInt($(this).prev().text());  // 商品数量
-			var iPrice = parseFloat($(this).prevAll('.col05').children('em').text());  // 商品单价
-			var iSubTotal = iNum * iPrice;
-			$(this).text(iSubTotal.toFixed(2) + '元');  // 商品小计
+			var fPrice = parseFloat($(this).prevAll('.col05').children('em').text());  // 商品单价
+			var fSubTotal = iNum * fPrice;
+			$(this).text(fSubTotal.toFixed(2) + '元');  // 商品小计
 			iCount++;
-			iTotal += iSubTotal;
+			fTotal += fSubTotal;
         });
 		$('.total_goods_count em').text(iCount);  // 总共多少商品
-		$('.total_goods_count b').text(iTotal.toFixed(2) + '元');  // 商品总计
+		$('.total_goods_count b').text(fTotal.toFixed(2) + '元');  // 商品总计
 		// 商品实际付款
-		$('.total_pay b').text(parseInt($('.transit b').text()) + parseInt($('.total_goods_count b').text()) + '元');
+		$('.total_pay b').text((parseInt($('.transit b').text()) + parseFloat($('.total_goods_count b').text())).toFixed(2) + '元');
+
+		$('#freight').val(parseInt($('.transit b').text()));
     });
 </script>
 {% endblock head %}
@@ -63,7 +65,7 @@
 			<li class="col04">{{ cart.goods.g_unit }}</li>
 			<li class="col05"><em>{{ cart.goods.g_price }}</em>元</li>
 			<li class="col06">{{ cart.count }}</li>
-			<li class="col07">25.80元</li>
+			<li class="col07">0元</li>
 		</ul>
 		{% endfor %}
 	</div>
@@ -72,13 +74,17 @@
 
 	<div class="common_list_con clearfix">
 		<div class="settle_con">
-			<div class="total_goods_count">共<em>2</em>件商品，总金额<b>42.60元</b></div>
+			<div class="total_goods_count">共<em>0</em>件商品，总金额<b>0元</b></div>
 			<div class="transit">运费：<b>10<em>元</em></b></div>
-			<div class="total_pay">实付款：<b>52.60元</b></div>
+			<div class="total_pay">实付款：<b>0元</b></div>
 		</div>
 	</div>
-
-	<div class="order_submit clearfix">
-		<a href="javascript:;" id="order_btn">提交订单</a>
-	</div>
+	<form action="/order/" method="post">
+		{% csrf_token %}
+        <div class="order_submit clearfix">
+			<input type="hidden" name="cart_ids" value="{{ cart_ids }}">
+			<input type="hidden" id="freight" name="freight" value="">
+			<input id="order_btn" type="submit" value="提交订单">
+        </div>
+	</form>
 {% endblock body_main %}

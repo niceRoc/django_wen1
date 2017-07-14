@@ -92,6 +92,12 @@
 
 			// 复选框选中商品，价格发送变化
 			$('input[type="checkbox"]').each(function(index, el) {
+			    if ($(':checked:not(#chb_all)').length == $(':checkbox:not(#chb_all)').length) {
+			        $('#chb_all').prop('checked', true);
+				}
+				else {
+			        $('#chb_all').prop('checked', false);
+				}
 				var ag_id = [];
 				$(this).click(function() {
 					// 设置显示选中的商品数量
@@ -169,7 +175,7 @@
 	</ul>
 
 	{% for cart in carts %}
-	<form method="post" action="/order/">
+	<form method="post" action="/cart/order/">
 		{% csrf_token %}
         <ul class="cart_list_td clearfix" id="{{ cart.id }}">
             <li class="col01"><input type="checkbox" name="cart_id" value="{{ cart.id }}" checked="checked"></li>
@@ -198,7 +204,7 @@
         <ul class="settlements">
             <li class="col01"><input type="checkbox" id="chb_all" checked="checked"></li>
             <li class="col02">全选</li>
-            <li class="col03">合计(不含运费)：<span>¥</span><em>42.60</em><br>共计<b>2</b>件商品</li>
+            <li class="col03">合计(不含运费)：<span>¥</span><em>0</em><br>共计<b>0</b>件商品</li>
             <li class="col04"><input type="submit" value="去结算" /></li>
         </ul>
 	</form>

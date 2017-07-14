@@ -34,3 +34,4 @@ class UserInfo(models.Model):
 
     # 逻辑删除
     isDelete = models.BooleanField(default=False)
+

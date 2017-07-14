@@ -3,6 +3,7 @@ from django.db.models import Sum
 from django.shortcuts import render
 from app_user.user_decorate import check_login
 from django.http import JsonResponse
+from app_user.models import UserInfo
 from models import CartInfo
 
 # Create your views here.
@@ -94,7 +95,7 @@ def handle(request):
             price_list.append(cart.goods.g_price)
 
         # 让两个列表的元素逐一相乘，构建一个新的列表
-        total_list = map(lambda (a, b):a * b, zip(num_list,price_list))
+        total_list = map(lambda (a, b): a * b, zip(num_list, price_list))
         # print total_list
         total = 0  # 初始化购物车中的商品总价
         for i in total_list:
@@ -122,3 +123,18 @@ def delete(request):
     print cart[0].id
     cart.delete()
     return JsonResponse({'is_delete': '1'})
+
+
+def order(request):
+    """去结算"""
+
+    # 用户信息
+    user = UserInfo.objects.get(pk=request.session.get('u_id'))
+    # 购物车
+    cart_ids = request.POST.getlist('cart_id')  # 获取所有的购物车id，[1,2,3]
+    c_ids = ','.join(cart_ids)  # 每个id以 ',' 分隔 拼接成一个新字符串  1,2,3
+    cart_list = CartInfo.objects.filter(id__in=cart_ids)  # 购物车对象 [cart,cart,]
+    print cart_list
+    context = {'title': '提交订单', 'user': user, 'cart_list': cart_list, 'cart_ids': c_ids}
+
+    return render(request, 'app_order/place_order.html', context)

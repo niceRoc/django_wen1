@@ -8,6 +8,8 @@ import datetime
 from django.views.decorators.csrf import csrf_exempt
 from user_decorate import check_login
 from app_goods.models import GoodsInfo
+from app_order.models import OrderMain
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -124,7 +126,29 @@ def center_info(request):
 def center_order(request):
     """用户中心 -- 全部订单页面"""
 
-    return render(request, 'app_user/user_center_order.html', {'title': '用户中心'})
+    u_id = request.session.get('u_id')
+    p_index = int(request.GET.get('p_index', '1'))  # 页码索引
+
+    # 查询该用户下所有的订单，按照时间倒序查询
+    order_list = OrderMain.objects.filter(user_id=u_id).order_by('-order_date')
+
+    paginator = Paginator(order_list, 2)   # 获取分页对象，设置每页显示2个主订单信息
+    order_page = paginator.page(p_index)  # 页面对象
+
+    # 设置分页页码列表，让超过5个页码时：只显示当前页码，以及前后个两个页码数
+    if paginator.num_pages < 5:  # 分页页码总数 < 5
+        range_list = paginator.page_range
+    elif order_page.number <= 2:  # 当前页码 为第1个或第2个时
+        range_list = range(1, 6)
+    elif order_page.number >= paginator.num_pages - 1:  # 当前页码 为最后1个或者最后第二个时
+        range_list = range(paginator.num_pages - 5 + 1, paginator.num_pages + 1)
+    else:
+        range_list = range(order_page.number - 2, order_page.number + 3)
+
+    return render(
+        request, 'app_user/user_center_order.html',
+        {'title': '用户中心', 'order_page': order_page, 'range_list': range_list}
+    )
 
 
 @check_login
