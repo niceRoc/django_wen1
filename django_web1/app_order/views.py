@@ -32,7 +32,7 @@ def index(request):
         cart_list = CartInfo.objects.filter(pk__in=cart_ids)  # 获取到所有购物车对象
         # 4.循环每个购物车对象，创建该商品的订单详情表
         for cart in cart_list:
-            # 4. 判断库存，如果商品数量 < 库存则创建数据，否则不做操作，回滚事务
+            # 5. 判断库存，如果商品数量 < 库存则创建数据，否则不做操作，回滚事务
             if cart.count <= cart.goods.g_stock:
                 order_detail = OrderDetail()
                 order_detail.order = order_main  # 订单号
@@ -41,16 +41,16 @@ def index(request):
                 order_detail.price = cart.goods.g_price  # 商品价格
                 order_detail.save()
 
-                # 5. 统计订单总金额
+                # 6. 统计订单总金额
                 total += order_detail.price * order_detail.count  # 商品小计
                 order_main.total = total + o_freight  # 订单总金额：商品总价+订单运费
                 order_main.save()
 
-                # 6. 改变商品库存
+                # 7. 改变商品库存
                 cart.goods.g_stock -= cart.count
                 cart.goods.save()
 
-                # 7. 删除该条购物车记录
+                # 8. 删除该条购物车记录
                 cart.delete()
             else:
                 transaction.savepoint_rollback(sid)  # 回滚事务，放弃之前的任何数据操作
