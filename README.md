@@ -5,19 +5,15 @@
 1. app_user models.py 模型类创建		UserInfo - 用户基本信息
 
 2. templates app_user 模板页
-	1. 用户注册		
-		1.register.html - 注册页
+		+1.register.html - 注册页
 
-	2. 用户登录		
-		+1. login.html  - 登录页
-
-	3. 用户中心		
-		+1. info.html - 个人信息
-		+2. order.html - 我的订单 
-		+3. site.html - 收货地址 
+		+2. login.html  - 登录页
+		+3. info.html - 用户中心-个人信息
+		+4. order.html - 用户中心-我的订单 
+		+5. site.html - 用户中心-收货地址 
 
 3. app_user views.py 视图,功能实现
-	1. 注册页
+	1. 注册页<br/>
 		+1. 通过js的正则匹配完成页面的表单数据验证,让用户按照定义的格式进行填写信息,
 		+2. 完成注册后,跳转到登录页进行登录
 	2. 登录页
