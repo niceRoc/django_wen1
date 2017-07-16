@@ -6,7 +6,7 @@
 
 2. templates app_user 模板页
 	1. 用户注册		
-		+1.register.html - 注册页
+		1.register.html - 注册页
 
 	2. 用户登录		
 		+1. login.html  - 登录页
