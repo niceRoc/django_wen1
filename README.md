@@ -5,7 +5,7 @@
 1. app_user models.py 模型类创建		UserInfo - 用户基本信息
 
 2. templates app_user 模板页
-	
+
 	+1. 用户注册  <br/>
 		-1.register.html - 注册页
 
@@ -14,8 +14,8 @@
 
 	+3. 用户中心  
 		a. info.html - 用户中心-个人信息
-		b. order.html - 用户中心-我的订单 
-		c. site.html - 用户中心-收货地址 
+		b. order.html - 用户中心-我的订单
+		c. site.html - 用户中心-收货地址
 
 3. app_user views.py 视图,功能实现
 
